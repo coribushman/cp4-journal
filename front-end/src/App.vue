@@ -5,8 +5,11 @@
     <div id="home" class="menu-item">
       <router-link to="/">Home</router-link>
     </div>
-    <div id="create" class="menu-item">
-      <router-link to="/create">Create</router-link>
+    <div id="create-entry" class="menu-item">
+      <router-link to="/create-entry">Create Entry</router-link>
+    </div>
+    <div id="create-tag" class="menu-item">
+      <router-link to="/create-tag">Create Tag</router-link>
     </div>
   </div>
   <router-view/>

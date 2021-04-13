@@ -21,6 +21,11 @@ const entrySchema = new mongoose.Schema({
   text: String,
   date: String,
   image: String,
+  tagID: Number,
+  // tag: {
+  //       type: mongoose.Schema.ObjectId,
+  //       ref: 'Tag'
+  //   },
 });
 
 // Create a model for journal entries
@@ -34,6 +39,8 @@ app.post('/api/entries', async (req, res) => {
     text: req.body.text,
     date: req.body.date,
     image: req.body.image,
+    tagID: req.body.tagID,
+    // tag: {},
   });
   try {
     await entry.save();
@@ -48,6 +55,10 @@ app.post('/api/entries', async (req, res) => {
 app.get('/api/entries', async (req, res) => {
   try {
     let entries = await Entry.find();
+    // for (let e of entries) {
+    //   e.tag = Tag.findByID(e.tagID);
+    // }
+
     res.send(entries);
   } catch (error) {
     //console.log(error);
@@ -77,8 +88,82 @@ app.put('/api/entries/:id', async (req, res) => {
     entry.title = req.body.title;
     entry.text = req.body.text;
     entry.date = req.body.date;
-    entry.image = req.body.image
+    entry.image = req.body.image;
+    entry.tagID = req.body.tagID;
+    // entry.tag = {};
     entry.save();
+    // res.send(entry);
+    res.sendStatus(200);
+  } catch (error) {
+    //console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// -------------------------- tags -------------------------------------------
+
+// Create a scheme for journal tags
+const tagSchema = new mongoose.Schema({
+  id: Number,
+  title: String,
+  color: String,
+  entries: Array,
+});
+
+// Create a model for journal tags
+const Tag = mongoose.model('Tag', tagSchema);
+
+// Create a new journal tag
+app.post('/api/tags', async (req, res) => {
+  const tag = new Tag({
+    id: req.body.id,
+    title: req.body.title,
+    color: req.body.color,
+    entries: req.body.entries,
+  });
+  try {
+    await tag.save();
+    res.send(tag);
+  } catch (error) {
+    //console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Get a list of all of the journal tags
+app.get('/api/tags', async (req, res) => {
+  try {
+    let tags = await Tag.find();
+    res.send(tags);
+  } catch (error) {
+    //console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Delete an tag.
+app.delete('/api/tags/:id', async (req, res) => {
+  try {
+    await Tag.deleteOne({
+      id: req.params.id
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    //console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Edit an entry.
+app.put('/api/tags/:id', async (req, res) => {
+  try {
+    let tag = await Tag.findOne({
+      id: req.params.id
+    });
+    tag.title = req.body.title;
+    tag.color = req.body.color;
+    tag.entries = req.body.entries;
+    tag.save();
     // res.send(entry);
     res.sendStatus(200);
   } catch (error) {

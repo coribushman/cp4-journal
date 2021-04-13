@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Create from '../views/Create.vue'
+import CreateEntry from '../views/CreateEntry.vue'
+import CreateTag from '../views/CreateTag.vue'
 
 Vue.use(VueRouter)
 
@@ -12,9 +13,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/create',
-    name: 'Create',
-    component: Create
+    path: '/create-entry',
+    name: 'CreateEntry',
+    component: CreateEntry
+  },
+  {
+    path: '/create-tag',
+    name: 'CreateTag',
+    component: CreateTag
   },
 ]
 
