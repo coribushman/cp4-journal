@@ -4,8 +4,9 @@
     <div class="add">
         <div class="form">
           <input v-model="newTag.title" placeholder="Title">
-          <!-- <input type="color" v-model="newTag.color" placeholder="Color"> -->
-          <input v-model="newTag.color" placeholder="Color (include '# for hexadecimal')">
+          <p></p>
+          <input v-model="newTag.color" placeholder="Color word or #hex">
+          <p></p>
           <button @click="upload">Upload</button>
         </div>
         <div class="upload" v-if="addedTag">
@@ -25,7 +26,7 @@
 
       <div class="not-edit" v-else-if="Object.keys(editedTag).length === 0">
         <div class="tags" v-for="tag in tags" :key="tag.id">
-          <p>{{tag.title}}</p>
+          <p class="tag" v-bind:style="{'color':tag.color}">{{tag.title}}</p>
           <div class="buttons">
             <button @click="deleteTag(tag)">Delete</button>
             <button @click="select(tag)">Edit</button>
@@ -121,6 +122,14 @@
 <style scoped>
 .page {
   margin: 30px;
+  margin-bottom: 50px;
+}
+
+.tag {
+  border: 2px solid black;
+  width: fit-content;
+  padding: 2px;
+
 }
 
 </style>

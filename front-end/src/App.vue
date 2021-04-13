@@ -6,10 +6,10 @@
       <router-link to="/">Home</router-link>
     </div>
     <div id="create-entry" class="menu-item">
-      <router-link to="/create-entry">Create Entry</router-link>
+      <router-link to="/create-entry">Entry</router-link>
     </div>
     <div id="create-tag" class="menu-item">
-      <router-link to="/create-tag">Create Tag</router-link>
+      <router-link to="/create-tag">Tag</router-link>
     </div>
   </div>
   <router-view/>
@@ -54,6 +54,7 @@ export default {
   text-decoration: none;
   font-size: 30px;
   color: white;
+  white-space: nowrap;
 }
 
 .footer {

@@ -40,7 +40,6 @@ app.post('/api/entries', async (req, res) => {
     date: req.body.date,
     image: req.body.image,
     tagID: req.body.tagID,
-    // tag: {},
   });
   try {
     await entry.save();
@@ -55,10 +54,6 @@ app.post('/api/entries', async (req, res) => {
 app.get('/api/entries', async (req, res) => {
   try {
     let entries = await Entry.find();
-    // for (let e of entries) {
-    //   e.tag = Tag.findByID(e.tagID);
-    // }
-
     res.send(entries);
   } catch (error) {
     //console.log(error);
@@ -90,9 +85,7 @@ app.put('/api/entries/:id', async (req, res) => {
     entry.date = req.body.date;
     entry.image = req.body.image;
     entry.tagID = req.body.tagID;
-    // entry.tag = {};
     entry.save();
-    // res.send(entry);
     res.sendStatus(200);
   } catch (error) {
     //console.log(error);

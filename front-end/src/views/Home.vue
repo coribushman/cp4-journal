@@ -1,24 +1,29 @@
 <template>
 <div class="wrapper">
   <div class="journal">
-    <div class="tag" v-for="tag in tags" :key="tag.id">
-      <div v-bind:style="{'background-color':'#' + tag.color}">{{tag.title}}</div>
+    <div class="tags">
+      <div class="tag" v-for="tag in tags" :key="tag.id">
+        <div v-bind:style="{'color':tag.color}">{{tag.title}}</div>
+      </div>
     </div>
 
+    <div class="entries">
     <div class="entry" v-for="entry in entries" :key="entry.id">
-
       <div class="normalEntry" v-if="editedEntry.id !== entry.id">
       <div class="image">
         <img :src="entry.image">
       </div>
       <div class="info">
-        <h1>Title: {{entry.title}}</h1>
-        <p>Text: {{entry.text}}</p>
+        <h1>{{entry.title}}</h1>
+        <p>{{entry.text}}</p>
         <br>
-        <p>Date: {{entry.date}}</p>
+        <p>{{entry.date}}</p>
         <br>
-          <p v-if="tagDict[entry.id] != undefined">Tag: {{tagDict[entry.id].title}}</p>
-          <p v-else>Tag: </p>
+        <div class="entry-tag">
+          <p v-if="tagDict[entry.id] != undefined" v-bind:style="{'color':tagDict[entry.id].color}">{{tagDict[entry.id].title}}</p>
+          <p v-else>No tag</p>
+        </div>
+
 
       </div>
       <div class="buttons">
@@ -45,33 +50,24 @@
       </div>
 
     </div>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
   import axios from 'axios';
-  // import Vue from 'vue';
   export default {
   name: 'Home',
   data() {
     return{
       tags: [],
       entries: [],
-      // id: null,
-      // title: null,
-      // text: null,
-      // date: null,
-      // image: null,
       editedEntry: {},
       tagDict: {},
     }
   },
   created() {
-    // this.getEntries();
-    // console.log("getEntries");
-    // this.getTags();
-    // console.log("getTags");
     this.getData();
   },
   methods: {
@@ -88,43 +84,17 @@
           for (let tagIndex in this.tags) {
             let tag = this.tags[tagIndex]
             if (entry.tagID == tag.id) {
-              // Vue.set(entry, "tag", tag);
-              // entry = Object.assign({}, entry, {id: tag. title: tag.title})
               console.log("entry:" + entry);
               console.log("entryID:" + entry.id);
               this.tagDict[entry.id] = tag;
             }
           }
-          // console.log("1");
-          // entry.tag = {title: "title", color: "green", id: 27};
-          // console.log(entry);
         }
-
-
-
         return true;
       } catch (error) {
         //console.log(error);
       }
     },
-    // async getTags() {
-    //   try {
-    //     let response = await axios.get("/api/tags");
-    //     this.tags = response.data;
-    //     return true;
-    //   } catch (error) {
-    //     //console.log(error);
-    //   }
-    // },
-    // async getEntries() {
-    //   try {
-    //     let response = await axios.get("/api/entries");
-    //     this.entries = response.data;
-    //     return true;
-    //   } catch (error) {
-    //     //console.log(error);
-    //   }
-    // },
     async deleteEntry(entryToRemove) {
       try {
         await axios.delete("/api/entries/" + entryToRemove.id);
@@ -175,16 +145,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 40px;
 }
 
 .journal {
   margin-top: 20px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: space-around;
 }
 
 .entry {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
   margin: 10px;
   margin-top: 50px;
   width: 600px;
@@ -193,6 +167,13 @@
 
 .entry img {
   width: 400px;
+}
+
+.entries {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .info {
@@ -234,11 +215,22 @@ button {
 }
 
 .tag {
-  display: flex;
-  flex-direction: row;
+
   flex-wrap: wrap;
   margin: 10px;
   padding: 5px;
   border: 1px solid black;
+}
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.entry-tag {
+  border: 2px solid black;
+  width: fit-content;
+  padding: 2px;
 }
 </style>
